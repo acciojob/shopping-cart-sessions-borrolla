@@ -2,7 +2,6 @@
 // You can modify this code
 // Product data
 let cart = JSON.parse(sessionStorage.getItem('cart')) ||  [];
-
 const products = [
   { id: 1, name: "Product 1", price: 10 },
   { id: 2, name: "Product 2", price: 20 },
@@ -21,6 +20,15 @@ function renderProducts() {
     li.innerHTML = `${product.name} - $${product.price} <button class="add-to-cart-btn" data-id="${product.id}">Add to Cart</button>`;
     productList.appendChild(li);
   });
+
+  // Attach event listeners to "Add to Cart" buttons
+	
+  document.querySelectorAll(".add-to-cart-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const productId = parseInt(button.getAttribute("data-id"));
+      addToCart(productId);
+	});
+  });
 }
 
 // Render cart list
@@ -33,20 +41,14 @@ function renderCart() {
 		<button class="remove-from-cart-btn" data-id="${product.id}">Remove</button>`;
 		cartList.appendChild(li);
 	});
+	
 	// Attach event listeners for remove buttons
   document.querySelectorAll(".remove-from-cart-btn").forEach(button => {
     button.addEventListener("click", () => {
       const productId = parseInt(button.getAttribute("data-id"));
       removeFromCart(productId);
     });
-  });	
-	document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".add-to-cart-btn").forEach(button => {
-    button.addEventListener("click", () => {
-      const productId = parseInt(button.getAttribute("data-id"));
-      addToCart(productId);
-    });
-  });
+  
 
   // Assuming there's a "Clear Cart" button
   const clearCartButton = document.getElementById("clear-cart-btn");
@@ -61,7 +63,7 @@ function addToCart(productId) {
 	const product = products.find(p => p.id === productId);
   if (product) {
     cart.push(product);
-	//localStorage.setItems('cart', JSON.stringify(cart));//save cart to session
+	//sessionStorage.setItems('cart', JSON.stringify(cart));//save cart to session
     renderCart();
   }
 }
@@ -71,7 +73,7 @@ function removeFromCart(productId) {
 	const index = cart.findIndex(p => p.id === productId);
   if (index !== -1) {
     cart.splice(index, 1);
-	//localStorage.setItem('cart', JSON.stringify(cart));
+	sessionStorage.setItem('cart', JSON.stringify(cart));
     renderCart();
   }
 	
@@ -80,15 +82,25 @@ function removeFromCart(productId) {
 // Clear cart
 function clearCart() {
 	cart.length = 0; // Clears the cart array
-	//localStorage.removeItem('cart');
+	sessionStorage.removeItem('cart');
   renderCart();
 	
 }
 
-//let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-
 // Initial render
-renderProducts();
-renderCart();
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderProducts();
+	renderCart();
+  // other code...
+});
+
+
+
+
+
+
+	
+
 
 
