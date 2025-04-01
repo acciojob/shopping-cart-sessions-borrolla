@@ -1,6 +1,8 @@
 // This is the boilerplate code given for you
 // You can modify this code
 // Product data
+let cart = [];
+
 const products = [
   { id: 1, name: "Product 1", price: 10 },
   { id: 2, name: "Product 2", price: 20 },
@@ -22,17 +24,66 @@ function renderProducts() {
 }
 
 // Render cart list
-function renderCart() {}
+function renderCart() {
+	const cartList = document.getElementById("cart-list");
+	cartList.innerHTML = ""; //clear the cart list
+	cart.forEach((product) => {
+		const li = document.createElement("li");
+		li.innerHTML = `${product.name} - $${product.price} 
+		<button class="remove-from-cart-btn" data-id="${product.id}">Remove</button>`;
+		cartList.appendChild(li);
+	});
+	// Attach event listeners for remove buttons
+  document.querySelectorAll(".remove-from-cart-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const productId = parseInt(button.getAttribute("data-id"));
+      removeFromCart(productId);
+    });
+  });	
+	document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".add-to-cart-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const productId = parseInt(button.getAttribute("data-id"));
+      addToCart(productId);
+    });
+  });
+
+  // Assuming there's a "Clear Cart" button
+  const clearCartButton = document.getElementById("clear-cart-btn");
+  if (clearCartButton) {
+    clearCartButton.addEventListener("click", clearCart);
+  }
+});
+}
 
 // Add item to cart
-function addToCart(productId) {}
+function addToCart(productId) {
+	const product = products.find(p => p.id === productId);
+  if (product) {
+    cart.push(product);
+    renderCart();
+  }
+}
 
 // Remove item from cart
-function removeFromCart(productId) {}
+function removeFromCart(productId) {
+	const index = cart.findIndex(p => p.id === productId);
+  if (index !== -1) {
+    cart.splice(index, 1);
+    renderCart();
+  }
+	
+}
 
 // Clear cart
-function clearCart() {}
+function clearCart() {
+	cart.length = 0; // Clears the cart array
+  renderCart();
+	
+}
 
 // Initial render
 renderProducts();
 renderCart();
+
+
