@@ -1,7 +1,7 @@
 // This is the boilerplate code given for you
 // You can modify this code
 // Product data
-let cart = [];
+let cart = JSON.parse(sessionStorage.getItem('cart')) ||  [];
 
 const products = [
   { id: 1, name: "Product 1", price: 10 },
@@ -61,6 +61,7 @@ function addToCart(productId) {
 	const product = products.find(p => p.id === productId);
   if (product) {
     cart.push(product);
+	//localStorage.setItems('cart', JSON.stringify(cart));//save cart to session
     renderCart();
   }
 }
@@ -70,6 +71,7 @@ function removeFromCart(productId) {
 	const index = cart.findIndex(p => p.id === productId);
   if (index !== -1) {
     cart.splice(index, 1);
+	//localStorage.setItem('cart', JSON.stringify(cart));
     renderCart();
   }
 	
@@ -78,9 +80,12 @@ function removeFromCart(productId) {
 // Clear cart
 function clearCart() {
 	cart.length = 0; // Clears the cart array
+	//localStorage.removeItem('cart');
   renderCart();
 	
 }
+
+//let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
 // Initial render
 renderProducts();
