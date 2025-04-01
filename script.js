@@ -1,7 +1,7 @@
 // This is the boilerplate code given for you
 // You can modify this code
 // Product data
-let cart = JSON.parse(sessionStorage.getItem('cart')) ||  [];
+let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 const products = [
   { id: 1, name: "Product 1", price: 10 },
   { id: 2, name: "Product 2", price: 20 },
@@ -54,16 +54,16 @@ function renderCart() {
   const clearCartButton = document.getElementById("clear-cart-btn");
   if (clearCartButton) {
     clearCartButton.addEventListener("click", clearCart);
-  }
-});
+     }
+  });
 }
 
 // Add item to cart
 function addToCart(productId) {
-	const product = products.find(p => p.id === productId);
+  const product = products.find(p => p.id === productId);
   if (product) {
     cart.push(product);
-	//sessionStorage.setItems('cart', JSON.stringify(cart));//save cart to session
+	sessionStorage.setItem('cart', JSON.stringify(cart));//save cart to session
     renderCart();
   }
 }
@@ -92,7 +92,6 @@ function clearCart() {
 document.addEventListener("DOMContentLoaded", () => {
   renderProducts();
 	renderCart();
-  // other code...
 });
 
 
